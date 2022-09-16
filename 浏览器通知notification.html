@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>浏览器通知</title>
+  </head>
+  <body>
+    <button onclick="notifyMe()">Notify me!</button>
+    <button onclick="multiplyNotify()">Notify me! (multiplyNotify)</button>
+
+    <script>
+      function generateNotification (title, options) {
+        return new Notification(title, options)
+      }
+
+      function multiplyNotify () {
+        for (let i = 0; i < 3; i++) {
+          notifyMe(i)
+        }
+      }
+
+      function notifyMe(title = '') {
+        console.log(title)
+        let notification = null
+        const options = {
+          image: 'https://images.unsplash.com/photo-1623653387945-2fd25214f8fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
+          // image: './bg.jpg',
+          // body 正文部分最多显示 4 行
+          body: `here the body (the first line)\nthe second line\nthe third line\nthe fourth line\nthe fifth line which cannot display\n`,
+          icon: 'https://images.unsplash.com/photo-1619380897562-725c909c68db?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80',
+          // icon: './th.jpg',
+          // Indicates that a notification should remain active until the user clicks or dismisses it, rather than closing automatically.
+          requireInteraction: true,
+          silent: true
+        }
+
+        // Let's check if the browser supports notifications
+        if (!("Notification" in window)) {
+          alert("This browser does not support desktop notification");
+        }
+
+        // Let's check whether notification permissions have already been granted
+        else if (Notification.permission === "granted") {
+          // If it's okay let's create a notification
+          notification = generateNotification(`Hi there! I'm a title${title}.`, options);
+        }
+
+        // Otherwise, we need to ask the user for permission
+        else if (Notification.permission !== "denied") {
+          Notification.requestPermission().then(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+              notification = generateNotification(`Hi there! I'm a title${title}.`, options);
+            }
+          });
+        }
+
+        // At last, if the user has denied notifications, and you
+        // want to be respectful there is no need to bother them anymore.
+
+        // when show
+        notification.onshow = function () {
+          console.log('when show')
+        }
+        // when click
+        notification.onclick = function () {
+          console.log('when click')
+          window.open(window.location.href)
+        }
+        // when close
+        notification.onclose = function () {
+          console.log('when close')
+        }
+        // when error
+        notification.onerror = function () {
+          console.log('when error')
+        }
+      }
+    </script>
+  </body>
+</html>

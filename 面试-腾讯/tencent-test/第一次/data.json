@@ -1,0 +1,16 @@
+{
+  "name": "dir1",
+  "files": ["file1.txt", "file2.txt"],
+  "subdirs": [
+    {
+      "name": "dir2",
+      "files": ["file1.txt", "file2.txt"],
+      "subdirs": [
+        {
+          "name": "dir3",
+          "files": ["file1.txt", "file2.txt"]
+        }
+      ]
+    }
+  ]
+}

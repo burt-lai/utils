@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <div class="demo" id="app">
+      <ul>
+        <li v-for="item in items" :key="item.id">
+          <input type="text" v-model.number="item.quantity" />
+          <span>{{ item.name }}</span>
+          <span v-if="item.quantity === 0"> - OUT OF STOCK</span>
+          <button @click="add(item)">add</button>
+        </li>
+      </ul>
+      <h2>Total Inventory:{{ total }}</h2>
+    </div>
+
+    <script>
+      const url =
+        'https://common-75845.gzc.vod.tencent-cloud.com/app/logo/test/data.json' // 题目的url
+      new Vue({
+        el: '#app',
+        name: 'Demo',
+        data () {
+          return {
+            items: []
+          }
+        },
+        computed: {
+          total () {
+            return this.items
+              // .slice()
+              .reduce((acc, cur) => ((acc += cur.quantity), acc), 0)
+          }
+        },
+        created () {
+          this.fetchData()
+        },
+        methods: {
+          fetchData () {
+            fetch(url, )
+              .then(res => res.json())
+              .then(res => {
+                console.log(res)
+                this.items = res
+              })
+          },
+          add (item) {
+            item.quantity++
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
